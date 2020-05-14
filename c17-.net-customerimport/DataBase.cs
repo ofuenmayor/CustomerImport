@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Tool.hbm2ddl;
 
 namespace com.tenpines.advancetdd
@@ -46,6 +48,16 @@ namespace com.tenpines.advancetdd
         {
             Session.Close();
             Session.Dispose();
+        }
+
+        public Customer GetCustomer(string identificationType, string identificationNumber)
+        {
+            return this.Session
+                .CreateCriteria(typeof(Customer))
+                .Add(Restrictions.Eq("IdentificationType", identificationType))
+                .Add(Restrictions.Eq("IdentificationNumber", identificationNumber))
+                .List<Customer>()
+                .Single();
         }
     }
 }

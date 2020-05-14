@@ -34,12 +34,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _dataBase.Session
-                .CreateCriteria(typeof(Customer))
-                .Add(Restrictions.Eq("IdentificationType", "D"))
-                .Add(Restrictions.Eq("IdentificationNumber", "22333444"))
-                .List<Customer>()
-                .Single();
+            var customer = _dataBase.GetCustomer("D", "22333444");
 
             Assert.NotNull(customer);
             Assert.Equal("D", customer.IdentificationType);
@@ -70,12 +65,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _dataBase.Session
-                .CreateCriteria(typeof(Customer))
-                .Add(Restrictions.Eq("IdentificationType", "C"))
-                .Add(Restrictions.Eq("IdentificationNumber", "23-25666777-9"))
-                .List<Customer>()
-                .Single();
+            var customer = _dataBase.GetCustomer("C", "23-25666777-9");
 
             Assert.NotNull(customer);
             Assert.Equal("C", customer.IdentificationType);
