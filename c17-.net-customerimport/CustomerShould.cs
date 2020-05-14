@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NHibernate.Criterion;
@@ -11,13 +12,13 @@ namespace com.tenpines.advancetdd
     {
         private readonly StreamReader _streamReader;
         private readonly CustomerImporter _customerImporter;
-        private readonly DataBase _dataBase;
+        private readonly ICustomerSystem _persistCustomerSystem;
 
         public CustomerShould()
         {
             _streamReader = StreamStubBuilder.GetStreamReaderWithCorrectData(); //new StreamReader(new FileStream("input.txt", FileMode.Open));
-            _dataBase = new DataBase();
-            _customerImporter = new CustomerImporter(_dataBase, _streamReader);
+            _persistCustomerSystem = new PersistCustomerSystem();
+            _customerImporter = new CustomerImporter(_persistCustomerSystem, _streamReader);
         }
 
         [Fact]
@@ -25,7 +26,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customers = _dataBase.Session.CreateCriteria(typeof(Customer)).List<Customer>();
+            var customers = _persistCustomerSystem.GetCustomers();
             Assert.Equal(2, customers.Count);
         }
 
@@ -34,7 +35,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _dataBase.GetCustomer("D", "22333444");
+            var customer = _persistCustomerSystem.GetCustomer("D", "22333444");
 
             Assert.NotNull(customer);
             Assert.Equal("D", customer.IdentificationType);
@@ -65,7 +66,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _dataBase.GetCustomer("C", "23-25666777-9");
+            var customer = _persistCustomerSystem.GetCustomer("C", "23-25666777-9");
 
             Assert.NotNull(customer);
             Assert.Equal("C", customer.IdentificationType);
@@ -87,7 +88,7 @@ namespace com.tenpines.advancetdd
         public void Dispose()
         {
             _streamReader.Close();
-            _dataBase.Close();
+            _persistCustomerSystem.Close();
         }
     }
 }

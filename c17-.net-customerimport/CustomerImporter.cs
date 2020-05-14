@@ -12,21 +12,21 @@ namespace com.tenpines.advancetdd
         public const string DATABASE_IS_NULL_EXCEPTION = "Database is null.";
         public const string STREAM_READER_IS_NULL_EXCEPTION = "Stream Reader is null.";
 
-        private readonly DataBase _dataBase;
+        private readonly ICustomerSystem customerSystem;
         private readonly StreamReader _lineReader;
         private string _currentLine;
         private string[] _currentRecord;
         private Customer _newCustomer;
 
-        public CustomerImporter(DataBase dataBase, StreamReader lineReader)
+        public CustomerImporter(ICustomerSystem CustomerSystem, StreamReader lineReader)
         {
-            _dataBase = dataBase ?? throw new ArgumentException(DATABASE_IS_NULL_EXCEPTION);
+            customerSystem = CustomerSystem ?? throw new ArgumentException(DATABASE_IS_NULL_EXCEPTION);
             _lineReader = lineReader ?? throw new ArgumentException(STREAM_READER_IS_NULL_EXCEPTION);
         }
 
         public void Import()
         {
-            _dataBase.BeginTransaction();
+            customerSystem.BeginTransaction();
 
             InitializeImport();
             while (ReadNextLine())
@@ -35,7 +35,7 @@ namespace com.tenpines.advancetdd
                 ImportRecord();
             }
 
-            _dataBase.EndTransaction();
+            customerSystem.EndTransaction();
         }
 
         private void ImportRecord()
@@ -87,7 +87,7 @@ namespace com.tenpines.advancetdd
                 IdentificationNumber = _currentRecord[4]
             };
 
-            _dataBase.Session.Persist(_newCustomer);
+            customerSystem.SaveCustomer(_newCustomer);
         }
 
         private void InitializeImport() =>
