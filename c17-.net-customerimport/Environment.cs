@@ -21,5 +21,12 @@ namespace com.tenpines.advancetdd
         }
 
         public abstract ICustomerSystem GetCustomerSystem();
+
+        public abstract ISupplierSystem GetSupplierSystem();
+
+    }
+
+    public interface ISupplierSystem
+    {
     }
 }

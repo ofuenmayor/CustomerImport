@@ -18,5 +18,15 @@ namespace com.tenpines.advancetdd
         {
             return Properties.Settings.Default.Environment == "Desarrollo";
         }
+
+        public override ISupplierSystem GetSupplierSystem()
+        {
+            return new TranscientSupplierSystem();
+        }
+    }
+
+    public class TranscientSupplierSystem : ISupplierSystem
+    {
+
     }
 }

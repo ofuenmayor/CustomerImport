@@ -38,7 +38,7 @@ namespace com.tenpines.advancetdd
             customerSystem.EndTransaction();
         }
 
-        private void ImportRecord()
+        protected void ImportRecord()
         {
             if (IsCustomerRecord())
             {
@@ -54,7 +54,7 @@ namespace com.tenpines.advancetdd
             }
         }
 
-        private void ImportAddress()
+        protected void ImportAddress()
         {
             _ = _newCustomer ?? throw new ArgumentException(CUSTOMER_IS_NULL_EXCEPTION);
             if (_currentRecord.Length != 6)
@@ -72,7 +72,7 @@ namespace com.tenpines.advancetdd
             });
         }
 
-        private void ImportCustomer()
+        protected void ImportCustomer()
         {
             if (_currentRecord.Length != 5)
             {
@@ -90,19 +90,19 @@ namespace com.tenpines.advancetdd
             customerSystem.SaveCustomer(_newCustomer);
         }
 
-        private void InitializeImport() =>
+        protected void InitializeImport() =>
             _newCustomer = null;
 
-        private bool ReadNextLine() =>
+        protected bool ReadNextLine() =>
             (_currentLine = _lineReader.ReadLine()) != null;
 
-        private bool IsAddressRecord() =>
+        protected bool IsAddressRecord() =>
             _currentLine.StartsWith("A");
 
-        private bool IsCustomerRecord() =>
+        protected bool IsCustomerRecord() =>
             _currentLine.StartsWith("C");
 
-        private void CreateRecord() =>
+        protected void CreateRecord() =>
             _currentRecord = _currentLine.Split(',');
     }
 }
