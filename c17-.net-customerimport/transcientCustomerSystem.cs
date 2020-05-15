@@ -6,36 +6,29 @@ using System.Threading.Tasks;
 
 namespace com.tenpines.advancetdd
 {
-    public class transcientCustomerSystem : ICustomerSystem
+    public class TranscientCustomerSystem : ICustomerSystem
     {
-        public void BeginTransaction()
-        {
-            throw new NotImplementedException();
-        }
+        public List<Customer> aCustomers = new List<Customer>();
+        public void BeginTransaction(){}
 
-        public void EndTransaction()
-        {
-            throw new NotImplementedException();
-        }
+        public void EndTransaction(){}
 
-        public void Close()
-        {
-            throw new NotImplementedException();
-        }
+        public void Close(){}
 
         public Customer GetCustomer(string identificationType, string identificationNumber)
         {
-            throw new NotImplementedException();
+            return aCustomers.Single(
+                customer => customer.IdentificationType == identificationType && customer.IdentificationNumber == identificationNumber);
         }
 
         public IList<Customer> GetCustomers()
         {
-            throw new NotImplementedException();
+            return aCustomers;
         }
 
         public void SaveCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+           aCustomers.Add(customer);
         }
     }
 }

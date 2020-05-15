@@ -12,13 +12,13 @@ namespace com.tenpines.advancetdd
     {
         private readonly StreamReader _streamReader;
         private readonly CustomerImporter _customerImporter;
-        private readonly ICustomerSystem _persistCustomerSystem;
+        private readonly ICustomerSystem CustomerSystem;
 
         public CustomerShould()
         {
             _streamReader = StreamStubBuilder.GetStreamReaderWithCorrectData(); //new StreamReader(new FileStream("input.txt", FileMode.Open));
-            _persistCustomerSystem = new PersistCustomerSystem();
-            _customerImporter = new CustomerImporter(_persistCustomerSystem, _streamReader);
+            CustomerSystem = Environment.Current().GetCustomerSystem();
+            _customerImporter = new CustomerImporter(CustomerSystem, _streamReader);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customers = _persistCustomerSystem.GetCustomers();
+            var customers = CustomerSystem.GetCustomers();
             Assert.Equal(2, customers.Count);
         }
 
@@ -35,7 +35,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _persistCustomerSystem.GetCustomer("D", "22333444");
+            var customer = CustomerSystem.GetCustomer("D", "22333444");
 
             Assert.NotNull(customer);
             Assert.Equal("D", customer.IdentificationType);
@@ -66,7 +66,7 @@ namespace com.tenpines.advancetdd
         {
             _customerImporter.Import();
 
-            var customer = _persistCustomerSystem.GetCustomer("C", "23-25666777-9");
+            var customer = CustomerSystem.GetCustomer("C", "23-25666777-9");
 
             Assert.NotNull(customer);
             Assert.Equal("C", customer.IdentificationType);
@@ -88,7 +88,7 @@ namespace com.tenpines.advancetdd
         public void Dispose()
         {
             _streamReader.Close();
-            _persistCustomerSystem.Close();
+            CustomerSystem.Close();
         }
     }
 }

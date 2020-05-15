@@ -29,6 +29,14 @@
     <Exec Command="dotnet reportgenerator &quot;-reports:reports/coverage/coverage.cobertura.xml&quot; &quot;-targetdir:reports/html&quot; &quot;-historydir:reports/coverage/history&quot;" />
   </Target>
 
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
     <ItemGroup>
     <None Update="CustomerImport.sdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -38,6 +46,10 @@
     </None>
     <None Update="NHibernate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Update="SharedLibs\Iesi.Collections.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
